@@ -1,135 +1,78 @@
-local Services = {
-    Storage = game:GetService("ReplicatedStorage"),
-    Workspace = game:GetService("Workspace"),
-    Players = game:GetService("Players"):FindFirstChild("rssn110"), -- Adjusted this line
-    Tween = game:GetService("TweenService"),
-    UserInput = game:GetService("UserInputService")
-}
+local HttpService = game:GetService("HttpService")
 
-local FusionModule = require(game.ReplicatedStorage.FusionModule)
+-- URL of your GitHub raw JSON file
+local url = "https://raw.githubusercontent.com/yourusername/yourrepository/refs/heads/main/teams.json"
 
-local homeTeam = FusionModule.NewTeam({
-    TeamName = "Dallas Bears",
-    City = "Dallas",
-    Colors = {
-        Helmet = "#1A1A1A",
-        Jersey = "#0055FF",
-        Pants = "#FFFFFF",
-        Stripe = "#FFD700",
-        NumberInner = "#FFFFFF",
-        NumberStroke = "#000000",
-        Field = "#007F0E"
-    }
-})
-
-local awayTeam = FusionModule.NewTeam({
-    TeamName = "New York Knights",
-    City = "New York",
-    Colors = {
-        Helmet = "#0000FF",
-        Jersey = "#FF0000",
-        Pants = "#000000",
-        Stripe = "#FFFFFF",
-        NumberInner = "#FFFFFF",
-        NumberStroke = "#000000",
-        Field = "#007F0E"
-    }
-})
-
-local function SetJersey(player, teamInfo, pos)
-    pcall(function()
-        if not player.Character then
-            return
-        end
-
-        task.spawn(function()
-            local uniform = player.Character:WaitForChild("Uniform")
-            wait(0.5)
-
-            if not uniform:FindFirstChild("Helmet") then
-                return
-            end
-
-            local colors = teamInfo.Colors
-
-            uniform.Helmet.Color = Color3.fromHex(colors.Helmet)
-            uniform.Helmet.Mesh.TextureId = ""
-
-            if uniform.Helmet:FindFirstChild("RightLogo") then
-                local logoPath = "ReplicatedStorage/Teams/" .. teamInfo.City .. " " .. teamInfo.TeamName .. "/Logo.png"
-                uniform.Helmet.RightLogo.Decal.Texture = getcustomasset(logoPath, false)
-                uniform.Helmet.LeftLogo.Decal.Texture = getcustomasset(logoPath, false)
-            end
-
-            uniform.ShoulderPads.Front.Team.Text = string.upper(teamInfo.TeamName)
-            uniform.ShoulderPads.Color = Color3.fromHex(colors.Jersey)
-            uniform.Shirt.Color = Color3.fromHex(colors.Jersey)
-            uniform.LeftShortSleeve.Color = Color3.fromHex(colors.Jersey)
-            uniform.RightShortSleeve.Color = Color3.fromHex(colors.Jersey)
-
-            uniform.LeftPants.Color = Color3.fromHex(colors.Pants)
-            uniform.RightPants.Color = Color3.fromHex(colors.Pants)
-
-            uniform.LeftGlove.Color = Color3.fromHex(colors.Stripe)
-            uniform.LeftShoe.Color = Color3.fromHex(colors.Stripe)
-            uniform.LeftSock.Color = Color3.fromHex(colors.Stripe)
-            uniform.RightGlove.Color = Color3.fromHex(colors.Stripe)
-            uniform.RightShoe.Color = Color3.fromHex(colors.Stripe)
-            uniform.RightSock.Color = Color3.fromHex(colors.Stripe)
-        end)
+-- Function to retrieve the JSON data
+local function GetTeamData()
+    local success, response = pcall(function()
+        return HttpService:GetAsync(url)
     end)
+
+    if success then
+        return HttpService:JSONDecode(response)
+    else
+        warn("Failed to load team data from GitHub")
+        return nil
+    end
 end
 
--- Update stadium theme based on the team colors
-local function UpdateStadiumTheme(teamInfo)
-    local stadium = Services.Workspace:WaitForChild("Models"):WaitForChild("Stadium")
-    if not stadium then return end
+-- Get the team data from GitHub
+local teams = GetTeamData()
 
-    local colors = teamInfo.Colors
-
-    if stadium:FindFirstChild("Field") then
-        stadium.Field.Color = Color3.fromHex(colors.Field or colors.Jersey)
-    end
-
-    if stadium:FindFirstChild("Seats") then
-        for _, seat in pairs(stadium.Seats:GetDescendants()) do
-            if seat:IsA("BasePart") then
-                seat.Color = Color3.fromHex(colors.Jersey)
+-- Function to update stadium based on the home team's asset ID
+local function UpdateStadium(stadiumAssetId)
+    local game = game
+    local workspace = game:GetService("Workspace")
+    for _, descendant in ipairs(workspace:GetDescendants()) do
+        if descendant:IsA("Model") and descendant.Name == "Stadium" then
+            descendant:Destroy()  -- Remove the existing stadium
+            local assetModel = game:GetObjects("rbxassetid://" .. stadiumAssetId)[1]
+            if assetModel then
+                assetModel.Parent = workspace
+                print("Stadium model replaced with asset ID:", stadiumAssetId)
+            else
+                warn("Failed to load asset with ID:", stadiumAssetId)
             end
         end
     end
+end
 
-    if stadium:FindFirstChild("Walls") then
-        for _, wall in pairs(stadium.Walls:GetDescendants()) do
-            if wall:IsA("BasePart") then
-                wall.Color = Color3.fromHex(colors.Helmet)
-            end
-        end
+-- Function to set player's uniform based on team colors
+local function SetPlayerUniform(player, team)
+    local character = player.Character or player.CharacterAdded:Wait()
+    local uniform = character:WaitForChild('Uniform')
+
+    -- Apply team colors to the uniform
+    uniform.Shirt.Color = Color3.fromHex(team.Colors.JerseyShirt)
+    uniform.Helmet.Color = Color3.fromHex(team.Colors.Helmet)
+    uniform.LeftPants.Color = Color3.fromHex(team.Colors.LeftPants)
+    uniform.RightPants.Color = Color3.fromHex(team.Colors.RightPants)
+    uniform.LeftShoe.Color = Color3.fromHex(team.Colors.LeftShoe)
+    uniform.RightShoe.Color = Color3.fromHex(team.Colors.RightShoe)
+    uniform.LeftGlove.Color = Color3.fromHex(team.Colors.LeftGlove)
+    uniform.RightGlove.Color = Color3.fromHex(team.Colors.RightGlove)
+    uniform.LeftSock.Color = Color3.fromHex(team.Colors.LeftSock)
+    uniform.RightSock.Color = Color3.fromHex(team.Colors.RightSock)
+
+    -- Update logo (if you have logos on the uniform)
+    if uniform:FindFirstChild("Helmet") and uniform.Helmet:FindFirstChild("RightLogo") then
+        uniform.Helmet.RightLogo.Decal.Texture = "rbxassetid://" .. team.StadiumAssetId
+        uniform.Helmet.LeftLogo.Decal.Texture = "rbxassetid://" .. team.StadiumAssetId
     end
 end
 
--- Automatically apply jerseys and stadium on load
-if Services.Players then
-    Services.Players.CharacterAdded:Connect(function(player)
-        player.CharacterAdded:Connect(function()
-            -- Apply Home Team Jersey
-            if homeTeam then
-                SetJersey(player, homeTeam, "Home")
-            end
-
-            -- Apply Away Team Jersey
-            if awayTeam then
-                SetJersey(player, awayTeam, "Away")
-            end
-        end)
-    end)
+-- Function to apply changes to all players based on their team
+local function ApplyUniformsToAllPlayers(homeTeam)
+    for _, player in pairs(game:GetService("Players"):GetPlayers()) do
+        SetPlayerUniform(player, homeTeam)  -- Apply the home team's uniform to all players
+    end
 end
 
--- Update stadium themes to match teams
-if homeTeam then
-    UpdateStadiumTheme(homeTeam)
-end
+-- Example usage
+local homeTeam = teams["Washington Warriors"]  -- Set your home team
+local awayTeam = teams["Pittsburgh Stormers"]  -- Set your away team
 
-if awayTeam then
-    UpdateStadiumTheme(awayTeam)
-end
+-- Update stadium and apply uniforms to all players
+UpdateStadium(homeTeam.StadiumAssetId)
+ApplyUniformsToAllPlayers(homeTeam)
