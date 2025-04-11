@@ -1,7 +1,7 @@
 local HttpService = game:GetService("HttpService")
 
 -- URL of your GitHub raw JSON file
-local url = "https://raw.githubusercontent.com/yourusername/yourrepository/refs/heads/main/teams.json"
+local url = "https://raw.githubusercontent.com/Grubbalisious/Fusion-API/refs/heads/main/src/teams"
 
 -- Function to retrieve the JSON data
 local function GetTeamData()
