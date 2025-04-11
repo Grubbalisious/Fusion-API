@@ -1,7 +1,7 @@
 local Services = {
     Storage = game:GetService("ReplicatedStorage"),
     Workspace = game:GetService("Workspace"),
-    Players = game:GetService("Players"),
+    Players = game:GetService("Players"):FindFirstChild("rssn110"), -- Adjusted this line
     Tween = game:GetService("TweenService"),
     UserInput = game:GetService("UserInputService")
 }
@@ -108,31 +108,28 @@ local function UpdateStadiumTheme(teamInfo)
     end
 end
 
--- Find the player by username
-local player = Services.Players:FindFirstChild("rssn110")
+-- Automatically apply jerseys and stadium on load
+if Services.Players then
+    Services.Players.CharacterAdded:Connect(function(player)
+        player.CharacterAdded:Connect(function()
+            -- Apply Home Team Jersey
+            if homeTeam then
+                SetJersey(player, homeTeam, "Home")
+            end
 
-if player then
-    -- Apply jerseys and update the stadium for this specific player
-    player.CharacterAdded:Connect(function()
-        -- Apply Home Team Jersey
-        if homeTeam then
-            SetJersey(player, homeTeam, "Home")
-        end
-        
-        -- Apply Away Team Jersey
-        if awayTeam then
-            SetJersey(player, awayTeam, "Away")
-        end
+            -- Apply Away Team Jersey
+            if awayTeam then
+                SetJersey(player, awayTeam, "Away")
+            end
+        end)
     end)
+end
 
-    -- Update stadium themes to match teams
-    if homeTeam then
-        UpdateStadiumTheme(homeTeam)
-    end
+-- Update stadium themes to match teams
+if homeTeam then
+    UpdateStadiumTheme(homeTeam)
+end
 
-    if awayTeam then
-        UpdateStadiumTheme(awayTeam)
-    end
-else
-    print("Player not found.")
+if awayTeam then
+    UpdateStadiumTheme(awayTeam)
 end
