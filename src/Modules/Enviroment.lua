@@ -109,21 +109,19 @@ local function UpdateStadiumTheme(teamInfo)
 end
 
 -- Automatically apply jerseys and stadium on load
-Services.Players.PlayerAdded:Connect(function(player)
-    player.CharacterAdded:Connect(function()
-        -- Apply Home Team Jersey
-        if homeTeam then
-            SetJersey(player, homeTeam, "Home")
-        end
-        
-        -- Apply Away Team Jersey
-        if awayTeam then
-            SetJersey(player, awayTeam, "Away")
-        end
-    end)
+Services.Players.LocalPlayer.CharacterAdded:Connect(function(player)
+    -- Apply Home Team Jersey
+    if homeTeam then
+        SetJersey(player, homeTeam, "Home")
+    end
+
+    -- Apply Away Team Jersey
+    if awayTeam then
+        SetJersey(player, awayTeam, "Away")
+    end
 end)
 
--- Update stadium themes to match teams
+-- Update stadium themes to match teams (Only run on the client)
 if homeTeam then
     UpdateStadiumTheme(homeTeam)
 end
