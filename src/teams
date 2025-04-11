@@ -173,58 +173,30 @@
             "RightShortSock": "#E5E5E5"
         },
         "StadiumAssetId": "13981964346"
-    }
-{
-    "Miami Sharks": {
-        "TeamName": "Miami Sharks",
-        "NFLTeam": "Miami Dolphins",
-        "CollegeTeam": "University of Miami",
-        "Colors": {
-            "JerseyShirt": "#0077B5",  // Miami Sharks main jersey color
-            "RightPants": "#006F9B",    // Miami Sharks pants color
-            "ShoulderPads": "#0077B5",  // Same as the jersey color
-            "LeftShoe": "#FFFFFF",      // White shoes
-            "RightShoe": "#FFFFFF",     // White shoes
-            "LeftSleeve": "#0077B5",    // Same as the jersey color
-            "RightSleeve": "#0077B5",   // Same as the jersey color
-            "Helmet": "#006F9B",        // Miami Sharks helmet color
-            "RightSock": "#FFFFFF",     // White socks
-            "LeftSock": "#FFFFFF",      // White socks
-            "LeftPants": "#006F9B",     // Same as pants color
-            "LeftPit": "#0077B5",       // Same as the jersey color
-            "RightPit": "#0077B5",      // Same as the jersey color
-            "LeftGlove": "#FFFFFF",     // White gloves
-            "RightGlove": "#FFFFFF",    // White gloves
-            "LeftShortSock": "#FFFFFF", // White short socks
-            "RightShortSock": "#FFFFFF" // White short socks
-        },
-        "StadiumAssetId": "1234567890" // Replace with the actual stadium asset ID for Miami Sharks
     },
     "Kansas City Cherokees": {
         "TeamName": "Kansas City Cherokees",
         "NFLTeam": "Kansas City Chiefs",
         "CollegeTeam": "University of Kansas",
         "Colors": {
-            "JerseyShirt": "#E31837",  // Kansas City Cherokees main jersey color (Red)
-            "RightPants": "#FFD100",    // Kansas City Cherokees pants color (Yellow/Gold)
-            "ShoulderPads": "#E31837",  // Same as the jersey color (Red)
-            "LeftShoe": "#FFD100",      // Yellow shoes
-            "RightShoe": "#FFD100",     // Yellow shoes
-            "LeftSleeve": "#E31837",    // Same as the jersey color (Red)
-            "RightSleeve": "#E31837",   // Same as the jersey color (Red)
-            "Helmet": "#FFD100",        // Kansas City Cherokees helmet color (Yellow/Gold)
-            "RightSock": "#FFD100",     // Yellow socks
-            "LeftSock": "#FFD100",      // Yellow socks
-            "LeftPants": "#FFD100",     // Same as pants color (Yellow/Gold)
-            "LeftPit": "#E31837",       // Same as the jersey color (Red)
-            "RightPit": "#E31837",      // Same as the jersey color (Red)
-            "LeftGlove": "#FFD100",     // Yellow gloves
-            "RightGlove": "#FFD100",    // Yellow gloves
-            "LeftShortSock": "#FFD100", // Yellow short socks
-            "RightShortSock": "#FFD100" // Yellow short socks
+            "JerseyShirt": "#E31837",
+            "RightPants": "#FFD100",
+            "ShoulderPads": "#E31837",
+            "LeftShoe": "#FFD100",
+            "RightShoe": "#FFD100",
+            "LeftSleeve": "#E31837",
+            "RightSleeve": "#E31837",
+            "Helmet": "#FFD100",
+            "RightSock": "#FFD100",
+            "LeftSock": "#FFD100",
+            "LeftPants": "#FFD100",
+            "LeftPit": "#E31837",
+            "RightPit": "#E31837",
+            "LeftGlove": "#FFD100",
+            "RightGlove": "#FFD100",
+            "LeftShortSock": "#FFD100",
+            "RightShortSock": "#FFD100"
         },
-        "StadiumAssetId": "0987654321" // Replace with the actual stadium asset ID for Kansas City Cherokees
+        "StadiumAssetId": "0987654321"
     }
-}
-
 }
