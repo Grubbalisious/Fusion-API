@@ -69,9 +69,7 @@ local function ApplyUniformsToAllPlayers(homeTeam)
     end
 end
 
--- Example usage
-local homeTeam = teams["Washington Warriors"]  -- Set your home team
-local awayTeam = teams["Pittsburgh Stormers"]  -- Set your away team
+
 
 -- Update stadium and apply uniforms to all players
 UpdateStadium(homeTeam.StadiumAssetId)
